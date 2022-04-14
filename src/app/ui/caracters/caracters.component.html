@@ -6,17 +6,31 @@
         <thead>
           <tr class="text-center">
             <th scope="col">Nombre</th>
-            <th scope="col">Color de Ojos</th>
-            <th scope="col">Género</th>
+            <th scope="col">
+              <form class="form-group">
+                <select [(ngModel)]="value" class="form-select" name="eyesColor">
+                  <option selected value="">Color De Ojos</option>
+                  <option [value]="color" *ngFor="let color of colorEyes">{{color}}</option>
+                </select>
+              </form>
+            </th>
+            <th scope="col">
+              <form class="form-group">
+                <select [(ngModel)]="value" class="form-select" name="gender">
+                  <option selected value="">Genero</option>
+                  <option [value]="type" *ngFor="let type of gender">{{type}}</option>
+                </select>
+              </form>
+            </th>
             <th scope="col">Lista Films</th>
           </tr>
         </thead>
         <tbody>
-          <ng-container *ngFor="let element of characterData">
-            <tr  class="text-center">
-              <td class="">{{element.name}}</td>
-              <td class="">{{element.eye_color}}</td>
-              <td class="">{{element.gender}}</td>
+          <ng-container *ngFor="let element of characterData| colorFilter:value:page">
+            <tr class="text-center align-middle">
+              <td>{{element.name}}</td>
+              <td>{{element.eye_color}}</td>
+              <td>{{element.gender}}</td>
               <td style="width: 1rem;">{{element.films | json}}</td>
             </tr>
           </ng-container>
@@ -24,5 +38,11 @@
       </table>
     </div>
   </div>
+  <div class="row my-4">
+    <div class="col d-flex justify-content-center align-items-center">
+      <button class="btn btn-warning mx-2" (click)="prevPage()">Anterior</button>
+      <button class="btn btn-warning mx-2" (click)="nextPage()"
+        [disabled]="(characterData | colorFilter:value:page).length === 0">Siguiente</button>
+    </div>
+  </div>
 </div>
-

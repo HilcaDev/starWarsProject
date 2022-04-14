@@ -1,21 +1,18 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { Character } from '../constants/characters.interface';
 
 @Pipe({
-  name: 'filterPipe'
+  name: 'colorFilter'
 })
-export class FilterPipePipe implements PipeTransform {
+export class FilterPipe implements PipeTransform {
 
-  transform(items: any[], searchText: string): any[] {
-    if (!items) {
-      return [];
-    }
-    if (!searchText) {
-      return items;
-    }
-    searchText = searchText.toLocaleLowerCase();
+  transform(data: Character[], term: string, page: number = 0): any[] {
 
-    return items.filter(it => {
-      return it.toLocaleLowerCase().includes(searchText);
-    });
+    if (term === undefined || term === '') {
+      return data.slice(page, page + 5);
+    }
+
+    const filterCharacters = data.filter(res => res.eye_color.toLowerCase().includes(term.toLowerCase()));
+    return filterCharacters.slice(page, page + 5)
   }
 }
